@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+		"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.connection.driver_class">org.hsqldb.jdbcDriver</property>
+        <property name="hibernate.connection.url">jdbc:hsqldb:hsql://localhost/SpiritDB</property>
+        <property name="hibernate.connection.username">sa</property>
+        <property name="connection.password"></property>
+		<property name="connection.pool_size">1</property>
+		<property name="hibernate.dialect">org.hibernate.dialect.HSQLDialect</property>
+		<property name="show_sql">false</property>
+		<property name="hbm2ddl.auto">update</property>
+		<!-- property name="hbm2ddl.auto">create</property--><!-- To drop the whole db -->
+		
+		<mapping resource="spirit/priotization/criteria/AgglomerationEvolutionCriteria.hbm.xml"/>
+		<mapping resource="spirit/priotization/criteria/AgglomerationRelevanceCriteria.hbm.xml"/>
+		<mapping resource="spirit/priotization/criteria/SmellRelevanceCriteria.hbm.xml"/>
+		<mapping resource="spirit/ui/views/criteriaConfiguration/util/SmellRelevance.hbm.xml"/>
+		<mapping resource="spirit/ui/views/criteriaConfiguration/util/AgglomerationRelevance.hbm.xml"/>
+		<mapping resource="spirit/priotization/criteria/HistoryBetaCriteria.hbm.xml"/>
+		<mapping resource="spirit/priotization/criteria/HistoryLENOMCriteria.hbm.xml"/>
+		<mapping resource="spirit/priotization/criteria/HistoryENOMCriteria.hbm.xml"/>
+		<mapping resource="spirit/priotization/criteria/util/NOMHistoryProject.hbm.xml"/>
+		<mapping resource="spirit/priotization/criteria/util/NOMHistoryOfAVersion.hbm.xml"/>
+		<mapping resource="spirit/priotization/criteria/util/NOMOfAClass.hbm.xml"/>
+		<mapping resource="spirit/priotization/criteria/AlphaCriteria.hbm.xml"/>
+		<mapping resource="spirit/priotization/criteria/ModifiabilityScenariosCriteria.hbm.xml"/>
+		<mapping resource="spirit/priotization/criteria/util/ModifiabilityScenario.hbm.xml"/>
+		
+		<mapping resource="spirit/priotization/criteria/ArchitecturalConcernCriteria.hbm.xml"/>
+		<mapping resource="spirit/priotization/criteria/BlueprintCriteria.hbm.xml"/>
+		<mapping resource="spirit/priotization/criteria/ArchitecturalConcernCriteriaWithImportance.hbm.xml"/>
+		<mapping resource="spirit/priotization/criteria/util/ArchitecturalConcern.hbm.xml"/>
+		<mapping resource="spirit/priotization/criteria/util/ComponentOfBlueprint.hbm.xml"/>
+		
+		
+		<mapping resource="spirit/priotization/criteria/ModifiabilityScenariosForAgglomerationCriteria.hbm.xml"/>
+		<mapping resource="spirit/priotization/criteria/ModifiabilityScenariosForSmellsNormalizedCriteria.hbm.xml"/>
+		<mapping resource="spirit/priotization/criteria/ArchitecturalConcernCriteriaForSmellNormalized.hbm.xml"/>
+		
+		
+		
+		<mapping resource="spirit/core/smells/detectors/configurationByProject/BrainClassDetectionConfiguration.hbm.xml"/>
+		<mapping resource="spirit/core/smells/detectors/configurationByProject/BrainMethodDetectionConfiguration.hbm.xml"/>
+
+		<mapping resource="spirit/core/smells/detectors/configurationByProject/DataClassDetectionConfiguration.hbm.xml"/>
+
+		<mapping resource="spirit/core/smells/detectors/configurationByProject/DispersedCouplingDetectionConfiguration.hbm.xml"/>
+
+		<mapping resource="spirit/core/smells/detectors/configurationByProject/FeatureEnvyDetectionConfiguration.hbm.xml"/>
+
+		<mapping resource="spirit/core/smells/detectors/configurationByProject/GodClassDetectionConfiguration.hbm.xml"/>
+
+		<mapping resource="spirit/core/smells/detectors/configurationByProject/IntensiveCouplingDetectionConfiguration.hbm.xml"/>
+
+		<mapping resource="spirit/core/smells/detectors/configurationByProject/RefusedParentBequestDetectionConfiguration.hbm.xml"/>
+
+		<mapping resource="spirit/core/smells/detectors/configurationByProject/ShotgunSurgeryDetectionConfiguration.hbm.xml"/>
+
+		<mapping resource="spirit/core/smells/detectors/configurationByProject/TraditionBreakerDetectionConfiguration.hbm.xml"/>
+		<mapping resource="spirit/ui/views/agglomerations/AgglomerationConfigurationForProject.hbm.xml"/>
+		
+    </session-factory>
+</hibernate-configuration>

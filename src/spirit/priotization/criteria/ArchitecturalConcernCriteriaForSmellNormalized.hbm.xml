@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 04-abr-2013 19:59:12 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+<class name="spirit.priotization.criteria.ArchitecturalConcernCriteriaForSmellsNormalized" table="CONCERNNORMALIZEDCRITERIA">
+  <id name="id" type="java.lang.Long">
+   <column name="CONCERNNORMALIZEDCRITERIA_ID"/>
+   <generator class="increment"/>
+  </id>
+ 
+  <!--bag name="architecturalProblems" lazy="false" cascade="all-delete-orphan" table="PROBLEMS">
+  	<key column="PROJECTNAME" not-null="true"/>
+  	<one-to-many class="spirit.priotization.criteria.util.ArchitecturalConcern"/>
+  </bag-->
+  <property generated="never" lazy="false" name="projectName" type="java.lang.String">
+   <column name="PROJECTNAME"/></property>
+ </class>
+</hibernate-mapping>

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 04-abr-2013 19:59:12 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+<class name="spirit.ui.views.agglomerations.AgglomerationConfigurationForProject" table="AGGLOMERATIONCONF">
+  <id name="id" type="java.lang.Long">
+   <column name="AGGLOMERATIONCONF_ID"/>
+   <generator class="increment"/>
+  </id>
+ <property generated="never" lazy="false" name="IntraMethodThreshold" type="java.lang.Integer">
+   <column name="IntraMethodThreshold"/></property>
+ <property generated="never" lazy="false" name="IntraClassThreshold" type="java.lang.Integer">
+   <column name="IntraClassThreshold"/></property>
+ <property generated="never" lazy="false" name="IntraComponentThreshold" type="java.lang.Integer">
+   <column name="IntraComponentThreshold"/></property>
+  <property generated="never" lazy="false" name="HierarchicalThreshold" type="java.lang.Integer">
+   <column name="HierarchicalThreshold"/></property>
+ <property generated="never" lazy="false" name="structureSource" type="java.lang.String">
+   <column name="structureSource"/></property>
+   <property generated="never" lazy="false" name="projectName" type="java.lang.String">
+   <column name="PROJECTNAME"/></property>
+ </class>
+</hibernate-mapping>

@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 04-abr-2013 19:59:12 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+<class name="spirit.core.smells.detectors.configurationByProject.RefusedParentBequestDetectionConfiguration" table="REFUSEDCONF">
+  <id name="id" type="java.lang.Long">
+   <column name="REFUSEDCONF_ID"/>
+   <generator class="increment"/>
+  </id>
+ <property generated="never" lazy="false" name="NProtM_Greater_Few" type="java.lang.Double">
+   <column name="NProtM_Greater_Few"/></property>
+ <property generated="never" lazy="false" name="BUR_Less_OneThird" type="java.lang.Double">
+   <column name="BUR_Less_OneThird"/></property>
+  <property generated="never" lazy="false" name="BOvR_Less_OneThird" type="java.lang.Double">
+   <column name="BOvR_Less_OneThird"/></property>
+   <property generated="never" lazy="false" name="AMW_Greater_AMWAvg" type="java.lang.Double">
+   <column name="AMW_Greater_AMWAvg"/></property>
+   <property generated="never" lazy="false" name="WMC_Greater_WMCAvg" type="java.lang.Double">
+   <column name="WMC_Greater_WMCAvg"/></property>
+   <property generated="never" lazy="false" name="NOM_Greater_NOMAvg" type="java.lang.Double">
+   <column name="NOM_Greater_NOMAvg"/></property>
+   <property generated="never" lazy="false" name="projectName" type="java.lang.String">
+   <column name="PROJECTNAME"/></property>
+ </class>
+</hibernate-mapping>

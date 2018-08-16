@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            name="JSpIRIT"
+            id="SpIRIT">
+      </category>
+      <view
+            name="JSpIRIT Smells View"
+            icon="icons/sample.gif"
+            category="SpIRIT"
+            class="spirit.ui.views.SpIRITSmellsView"
+            id="spirit.ui.views.SpIRITSmellsView">
+      </view>
+      <view
+            category="SpIRIT"
+            class="spirit.ui.views.SpIRITAgglomerationsView"
+            icon="icons/organic.png"
+            id="spirit.views.SpIRITAgglomerationsView"
+            name="JSpIRIT Agglomerations View">
+      </view>
+      <view
+            category="SpIRIT"
+            class="bandago.views.CodeSmellsSolutions"
+            icon="icons/sample.gif"
+            id="bandago.views.CodeSmellsSolutions"
+            name="Bandago View">
+      </view>
+      <view
+            category="SpIRIT"
+            class="spirit.ui.views.SpIRITHotSpotsView"
+            icon="icons/organic.png"
+            id="spirit.views.SpIRITHotSpotsView"
+            name="JSpIRIT Heat Map View">
+      </view>
+      <view
+            category="SpIRIT"
+            class="spirit.ui.views.SpIRITCirclesAgglomerationsView"
+            icon="icons/organic.png"
+            id="spirit.views.SpIRITCirclesAgglomerationsView"
+            name="JSpIRIT Intra-Component/Hierarchical Agglomerations View">
+      </view>
+      <view
+            category="SpIRIT"
+            class="spirit.ui.views.SpIRITIntraClassAgglomerationsView"
+            icon="icons/organic.png"
+            id="spirit.views.SpIRITIntraClassAgglomerationsView"
+            name="JSpIRIT Intra Class Agglomerations View">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.eclipse.jdt.ui.JavaPerspective">
+         <view
+               ratio="0.5"
+               relative="org.eclipse.ui.views.ProblemView"
+               relationship="right"
+               id="spirit.ui.views.SpIRITSmellsView">
+         </view>
+         <view
+               id="spirit.ui.views.SpIRITAgglomerationsView"
+               ratio="0.5"
+               relationship="right"
+               relative="org.eclipse.ui.views.ProblemView">
+         </view>
+         <view
+               id="bandago.views.CodeSmellsSolutions"
+               ratio="0.5"
+               relationship="right"
+               relative="org.eclipse.ui.views.ProblemView">
+         </view>
+         <view
+               id="spirit.ui.views.SpIRITHotSpotsView"
+               ratio="0.5"
+               relationship="right"
+               relative="spirit.ui.views.SpIRITAgglomerationsView">
+         </view>
+         <view
+               id="spirit.ui.views.SpIRITCirclesAgglomerationsView"
+               ratio="0.5"
+               relationship="right"
+               relative="spirit.ui.views.SpIRITHotSpotsView">
+         </view>
+         <view
+               id="spirit.ui.views.SpIRITIntraClassAgglomerationsView"
+               ratio="0.5"
+               relationship="right"
+               relative="spirit.ui.views.SpIRITCirclesAgglomerationsView">
+         </view>
+      </perspectiveExtension>
+   </extension>
+   <extension
+         point="org.eclipse.help.contexts">
+      <contexts
+            file="contexts.xml">
+      </contexts>
+   </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            adaptable="true"
+            id="SpIRIT.findSmellsContribution"
+            nameFilter="*"
+            objectClass="org.eclipse.core.resources.IProject">
+         <action
+               class="spirit.ui.actions.FindDesignFlawAction"
+               enablesFor="+"
+               id="SpIRIT.findSmellsAction1"
+               label="Find Code Smells"
+               menubarPath="SpIRIT.menu1/SpIRIT.groupMarker1">
+         </action>
+         <menu
+               id="SpIRIT.menu1"
+               label="JSpIRIT"
+               path="additions">
+            <groupMarker
+                  name="SpIRIT.groupMarker1">
+            </groupMarker>
+            <separator
+                  name="additions">
+            </separator>
+         </menu>
+      </objectContribution>
+   </extension>
+   <extension
+   		 id="br.pucrio.inf.organic.agglomerationMarker"
+   		 name="Agglomeration"
+         point="org.eclipse.core.resources.markers">
+         <super
+         type="org.eclipse.core.resources.problemmarker">
+   	 </super>
+   	 <persistent
+         	value="true">
+   </persistent>
+   </extension>
+
+	
+
+</plugin>

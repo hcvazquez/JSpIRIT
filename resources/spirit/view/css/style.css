@@ -1,0 +1,75 @@
+.navbar {
+	min-height: 20px;
+}
+
+.navbar-brand {
+	font-size: 18px;
+	line-height: 8px;
+	color: #EEEEEE;
+	font-weight: bold;
+}
+
+.navbar-nav>li>a {
+	line-height: 8px;
+}
+
+.container-fluid.fixed-margin {
+	padding-top: 50px;
+	padding-left: 240px;
+	padding-top: 45px;
+	padding-right: 15px;
+}
+
+/* Side Nav */
+.side-nav {
+	margin-left: -225px;
+	left: 225px;
+	width: 325px;
+	position: fixed;
+	top: 38px;
+	padding-top: 0px;
+	height: 100%;
+	border-radius: 0;
+	border: none;
+	background-color: #222222;
+	overflow-y: auto;
+}
+
+.side-nav>li>a {
+	width: 225px;
+}
+
+.navbar-inverse .navbar-nav>li>a:hover,.navbar-inverse .navbar-nav>li>a:focus
+	{
+	background-color: #080808;
+}
+
+.checkbox-label {
+	color: white;
+	padding-left: 10px;
+}
+
+.checkbox-options {
+	color: white;
+	padding-left: 100px;
+}
+
+.link-tools .tool-remove { display: none }
+.link-tools .tool-options { display: none }
+
+.smellsFrame {
+    background-color: #222222;
+    width: inherit;
+    height: 300px;
+}
+
+.d3chart {
+    margin-left: 500px; 
+    margin-top: 100px;       
+}
+
+.d3chart>svg {
+	width: 1200px;
+    height: 1200px;
+    overflow: unset;
+}

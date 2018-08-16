@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 04-abr-2013 19:59:12 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+<class name="spirit.core.smells.detectors.configurationByProject.DispersedCouplingDetectionConfiguration" table="DISPERSEDCOUPLINGCONF">
+  <id name="id" type="java.lang.Long">
+   <column name="DISPERSEDCOUPLINGCONF_ID"/>
+   <generator class="increment"/>
+  </id>
+ <property generated="never" lazy="false" name="MAXNESTING_Greater_Shallow" type="java.lang.Double">
+   <column name="MAXNESTING_Greater_Shallow"/></property>
+ <property generated="never" lazy="false" name="CINT_Greater_SMemCap" type="java.lang.Double">
+   <column name="CINT_Greater_SMemCap"/></property>
+  <property generated="never" lazy="false" name="CDISP_GreaterEqual_Half" type="java.lang.Double">
+   <column name="CDISP_GreaterEqual_Half"/></property>
+   <property generated="never" lazy="false" name="projectName" type="java.lang.String">
+   <column name="PROJECTNAME"/></property>
+ </class>
+</hibernate-mapping>

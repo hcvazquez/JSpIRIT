@@ -1,0 +1,271 @@
+package spirit.ui.actions;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.Set;
+import java.util.Vector;
+
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.ui.IObjectActionDelegate;
+import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
+
+import spirit.changes.manager.CodeChangeListener;
+import spirit.changes.manager.CodeChanges;
+import spirit.changes.manager.PreviousScanInfo;
+import spirit.changes.manager.ScanMerger;
+import spirit.core.design.AgglomerationManager;
+import spirit.core.design.CodeSmellsManager;
+import spirit.core.design.CodeSmellsManagerFactory;
+import spirit.core.design.DesignFlaw;
+import spirit.dependencies.DependencyVisitor;
+import spirit.dependencies.Graph;
+import spirit.metrics.storage.InvokingCache;
+import spirit.priotization.RankingManagerForAgglomerations;
+import spirit.priotization.RankingManagerForSmells;
+import spirit.ui.views.SpIRITAgglomerationsView;
+import spirit.ui.views.SpIRITCirclesAgglomerationsView;
+import spirit.ui.views.SpIRITHotSpotsView;
+import spirit.ui.views.SpIRITIntraClassAgglomerationsView;
+import spirit.ui.views.SpIRITSmellsView;
+import spirit.ui.views.data.DataFeed;
+import spirit.ui.views.data.DataHelper;
+import spirit.ui.views.data.agglomerations.DataFeedAgglomerations;
+import spirit.ui.views.data.agglomerations.DataHelperAgglomerations;
+import spirit.utils.ProjectInfo;
+
+public class FindDesignFlawAction implements IObjectActionDelegate {
+	private ISelection selection;
+	private IWorkbenchWindow window;
+<<<<<<< HEAD
+	
+=======
+
+	@Override
+>>>>>>> jspirit-with-performance-fix
+	public void run(IAction action) {
+		try {
+			window.run(false, true, new IRunnableWithProgress() {
+		         public void run(IProgressMonitor monitor)
+		            throws InvocationTargetException, InterruptedException {
+		            monitor.beginTask("Finding code smells", 14);
+		           
+		            IProject selectedProject=(IProject)(((StructuredSelection)selection).getFirstElement());
+		            CodeSmellsManagerFactory.getInstance().setCurrentProject(selectedProject);
+		            CodeSmellsManager codeSmellManager = CodeSmellsManagerFactory.getInstance().getCurrentProjectManager();
+		            codeSmellManager.initialize();
+					InvokingCache.getInstance().initialize();
+					AgglomerationManager agglomerationManager = AgglomerationManager.getInstance();
+					agglomerationManager.setCurrentProject(selectedProject.getFullPath().toString());					
+
+					try {
+						//Se inicia el timer
+						long time_start, time_end;
+						time_start = System.currentTimeMillis();
+						//Fin inicio timer
+						
+						/**
+ 						 * 
+ 						 */
+ 						codeSmellManager.setVisitOnlyModified(false);						
+ 						Graph graph = DependencyVisitor.getInstance().getGraph(CodeSmellsManagerFactory.getInstance().getCurrentProject().getName());
+ 						if(!CodeChanges.getInstance().isNeedReScan() && graph.countVertexes() > 0) {
+ 							System.out.println("EL GRAFO ESTA CREADO!!!");
+ 							System.out.println("CAMBIOS REGISTRADOS: " + CodeChanges.getInstance().getChanges());
+ 							/*
+ 							 * Si ya se armo el grafo anteriormente hacemos BFS empezando con las clases modificadas como vertices origen para obtener
+ 							 * las clases que fueron indirectamente involucradas en los cambios.							
+ 							 */
+ 							CodeChanges changes = CodeChanges.getInstance();
+ 							Set<String> modClasses = null;
+ 							if(changes.anyChanges())								
+ 								modClasses = graph.getTouchedClasses(changes);
+ 							if(modClasses != null) {
+ 								codeSmellManager.setVisitOnlyModified(true);
+ 								codeSmellManager.setModifiedClasses(modClasses);
+ 							}
+ 							//solo se armara AST de las clases dentro de modClasses
+ 						}
+ 						else
+ 							codeSmellManager.setVisitDependencies(true);
+ 							
+ 						/**
+ 						 * 
+ 						 */
+
+						monitor.subTask("Calculating metrics");
+						codeSmellManager.calculateMetricsCode();
+						monitor.worked(4);
+						monitor.subTask("Calculating cross attributes");
+						codeSmellManager.calculateAditionalMetrics();
+						monitor.worked(4);
+						
+						
+
+						codeSmellManager.detectCodeSmells();
+						
+						/**
+						 * 
+						 */
+ 						//Se "escucha" por eventos de modificacion en los recursos
+ 						CodeChangeListener changeListener = new CodeChangeListener();
+ 						selectedProject.getWorkspace().addResourceChangeListener(changeListener.getListener());					
+ 						
+ 						monitor.worked(4);						
+ 											
+ 						if(codeSmellManager.isVisitDependencies()) {
+ 							CodeChanges.getInstance().setNeedReScan(false);
+ 							codeSmellManager.setVisitDependencies(false);			
+ 							PreviousScanInfo.getInstance().setPreviousSmells(codeSmellManager.getSmells());								
+ 						}
+ 						else {
+ 							Set<String> mc = codeSmellManager.getModifiedClasses();
+ 							if (mc.size() > 0) {
+ 								ScanMerger.removeModified(mc);
+ 								CodeChanges.getInstance().clear();
+ 								
+ 								codeSmellManager.getModifiedClasses().clear();
+ 								
+ 								ScanMerger.merge(codeSmellManager.getSmells());
+ 								codeSmellManager.setSmells(PreviousScanInfo.getInstance().getPreviousSmells());
+ 							}
+ 						}
+						/**
+						 * 
+						 */
+						
+						agglomerationManager.detectAglomerations(selectedProject);
+						monitor.worked(4);
+						
+						//Se toma registro del tiempo de ejecucion
+						time_end = System.currentTimeMillis();
+						System.out.println("the task has taken "+ ( time_end - time_start ) +" milliseconds");
+						//Fin registro
+						
+					} catch (Exception e) {
+						System.out.println(e);
+						/*MessageDialog.openInformation(
+								shell,
+								"SpiritMenu",
+								"Calcular metricas was executed.");*/
+					}
+					
+					monitor.subTask("Calculating ranking");
+					
+					codeSmellManager.countCodeSmellsDebug();
+					
+					Vector<DesignFlaw> smellsFlaws=new Vector<DesignFlaw>();
+					smellsFlaws.addAll(codeSmellManager.getSmells());
+					
+					RankingManagerForSmells.getInstance().setDesingFlaws(smellsFlaws,selectedProject.getFullPath().toString());
+					monitor.worked(2);															
+					
+					Vector<DesignFlaw> agglomerationFlaws=new Vector<DesignFlaw>();
+					agglomerationFlaws.addAll(agglomerationManager.getResultsForCurrentProject());
+					RankingManagerForAgglomerations.getInstance().setDesingFlaws(agglomerationFlaws, selectedProject.getFullPath().toString());
+					/**
+					 * HOTSPOTS VIEW DATA CALCULATIONS
+					 * <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+					 */
+					
+					DataFeed data = DataFeed.getInstance();
+					String[] packageData = DataHelper.calculatePackageData();
+					data.setSmellsByPackage(packageData[0]);
+					data.setSmellsByPackage2(packageData[1]);
+					data.setColors(packageData[2]);
+					data.setColors2(packageData[3]);
+					data.setRelationships(DataHelper.getPackageRelationships());																				
+					
+		
+					/**
+					 * >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+					 * HOTSPOTS VIEW DATA CALCULATIONS
+					 */
+					
+					/**
+					 * AGGLOMERATIONS VIEW DATA CALCULATIONS
+					 * <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+					 */
+					DataFeedAgglomerations agglomerations_data = DataFeedAgglomerations.getInstance();
+					agglomerations_data.setIntraComponentData(DataHelperAgglomerations.getIntracomponentAgglomerationsData());
+					agglomerations_data.setHierarchicalData(DataHelperAgglomerations.getHierarchicalAgglomerationsData());
+					agglomerations_data.setPackageDependencies(DataHelperAgglomerations.getPackageRelationships());
+					
+					System.out.println(DataHelperAgglomerations.getIntracomponentAgglomerationsData());
+					//System.out.println(DataHelperAgglomerations.getPackageRelationships());
+					//System.out.println(DataHelperAgglomerations.getHierarchicalAgglomerationsData());
+					
+					agglomerations_data.setIntraClassData(DataHelperAgglomerations.getIntraClassAgglomerationsData());
+					/**
+					 * >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+					 * AGGLOMERATIONS VIEW DATA CALCULATIONS
+					 */
+					
+					
+					
+					/**
+					 * sysout
+					 */
+//					for(DesignFlaw flaw : agglomerationFlaws) {
+//						System.out.println(((AgglomerationModel) flaw).getTopologyName());
+//						Iterator<CodeSmell> it = ((AgglomerationModel) flaw).getCodeAnomalies().iterator();
+//						CodeSmell cs = it.next();
+//						System.out.println("Package: " + cs.getMainClassName().substring(0, cs.getMainClassName().lastIndexOf(".")));
+//						for(CodeSmell smell : ((AgglomerationModel) flaw).getCodeAnomalies())							
+//							System.out.print(smell.getKindOfSmellName() + "#" + smell.getElementName() + ",   ");
+//						System.out.println();
+//					}
+					
+		            /**for (int i = 20; i > 0; --i) {
+		                monitor.subTask("seconds left = " + i);
+		                Thread.sleep(1000);
+		                monitor.worked(1);
+		             }**/
+					SpIRITSmellsView view;
+					SpIRITAgglomerationsView agglomerationView;
+					SpIRITHotSpotsView hotSpotView;
+					SpIRITCirclesAgglomerationsView circlesView;
+					SpIRITIntraClassAgglomerationsView intraClassView;
+					try {
+						view = (SpIRITSmellsView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView("spirit.ui.views.SpIRITSmellsView");
+						view.createUpdateColumns();
+						view.updateView();
+						
+						agglomerationView = (SpIRITAgglomerationsView)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(SpIRITAgglomerationsView.ID);
+						agglomerationView.createUpdateColumns();
+						agglomerationView.updateView();
+						
+						hotSpotView = (SpIRITHotSpotsView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(SpIRITHotSpotsView.ID);
+						circlesView = (SpIRITCirclesAgglomerationsView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(SpIRITCirclesAgglomerationsView.ID);
+						intraClassView = (SpIRITIntraClassAgglomerationsView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(SpIRITIntraClassAgglomerationsView.ID);
+						
+						
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					
+		            monitor.done();
+		         }
+				
+		      });
+			
+			
+		} catch (Exception e) {e.printStackTrace();}
+	}	
+
+	@Override
+	public void selectionChanged(IAction action, ISelection selection) {
+		this.selection = selection;
+	}
+
+	@Override
+	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
+		window = targetPart.getSite().getWorkbenchWindow();
+	}
+
+}

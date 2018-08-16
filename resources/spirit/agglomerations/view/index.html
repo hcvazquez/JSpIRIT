@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<link href="css/style.css" rel="stylesheet">
+<body>
+<div><button id="refreshButton" type="button" onclick="refresh()">Refresh</button><button id="drawButton" type="button" onclick="getData()">Draw</button></div>
+<br>
+<div style="width: 17%">
+	<label>
+		<input type="checkbox" id="check" /> Show Hierarchical Agglomerations
+	</label>
+	<svg width="40" height="30" style="position:absolute;">
+		<circle fill="transparent" stroke="red" stroke-width="3" r="10" cy="13" cx="23"></circle>
+	</svg>
+</div>
+<br>
+<div style="width: 15%">
+	<label>
+		<input type="checkbox" id="check1" /> Show packages dependencies
+	</label>
+	<svg width="40" height="30" style="position:absolute;">
+		<circle fill="transparent" stroke="black" stroke-width="2" r="10" cy="13" cx="23"></circle>
+	</svg>
+</div>
+<script src="js/lib/d3.min.js"></script>
+<script src="js/geometricFunctions.js"></script>
+<script>
+
+function refresh() {
+	window.location.reload();
+}
+
+function getData() { //Begin getData	
+
+	var smellColor = ["#C0F864", "#559ACB","#FF8C61","#FFBA61", "#378B2E", "#AA9739", "#90305A", "#52606F", "#AA8779", "#882700","transparent"];
+	
+	var smellName = ["Shotgun Surgery","Feature Envy","Dispersed Coupling","God Class","Refused Parent Bequest","Brain Class","Brain Method","Data Class","Intensive Coupling","Tradition Breaker"];
+	
+	var packages_h = JSON.parse(getAgglomerationsDataFeed(1));
+	
+	var dependencies = JSON.parse(getAgglomerationsDataFeed(2));
+	var packHash = [];
+	
+	var allPackages = [];
+	
+	var root = JSON.parse(getAgglomerationsDataFeed(0));
+	
+	for(var i = 0; i < dependencies.length; i++) {
+	    packHash[dependencies[i].name] = dependencies[i].dependencies;
+	    allPackages[i] =dependencies[i].name;
+	}
+	/**
+	 * DATAFEED
+	 */	 
+	
+	var margin = 200, //old value = 20 (remove +100 correction on lines)
+	    diameter = 1400;
+	    correction = diameter/2;
+	
+	var color = d3.scale.linear()
+	    .domain([-1, 5])
+	    .range(["hsl(0,0%,97%)", "hsl(0,0%,75%)"]) //grey
+	    .interpolate(d3.interpolateHcl);
+
+	var background_color = "white";
+	
+	var pack = d3.layout.pack()
+	    .sort(function comparator(a, b) { return b.order - a.order; })
+	    .padding(10)
+	    .size([diameter - margin, diameter - margin])
+	    .value(function(d) { return d.size; })
+	
+	var svgRoot = d3.select("body").append("svg")
+	    .attr("xmlns","http://www.w3.org/2000/svg")
+	    .attr("xmlns:xmlns:xlink","http://www.w3.org/1999/xlink")
+	    .attr("width", diameter)
+	    .attr("height", diameter);    
+	
+	var svg = svgRoot.append("svg")
+	    .attr("width", diameter)
+	    .attr("height", diameter)
+	  .append("g")
+	    .attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")");
+	
+	var focus = root,
+	    nodes = pack.nodes(root),
+	    view;
+	
+	function isPackage(name) {
+	  return packHash[name] !== undefined;
+	}
+	
+	
+	var circle = svg.selectAll("circle")
+	    .data(nodes)
+	  .enter().append("circle")
+	    .attr("class", function(d) { return d.parent ? d.children ? "node" : "node" : "node node--root"; })
+	    .style("fill", function(d) {
+	    	   if (d.name.indexOf("*") > -1 || d.name === "Agglomerations")
+	    		    return "transparent";
+	    	   if (isPackage(d.name))
+	    		    return color(Math.floor(d.order/10))	   	
+	      	return smellColor[d.groupid]})
+	    .style("stroke", function(d) {
+	    	if ((d.name.indexOf("*") > -1) && d.children !== undefined && d.children.length > 0)
+	    		return "#000"
+	
+	    })
+	    .style("stroke-dasharray", function(d) {
+	    	if ((d.name.indexOf("*") > -1) && d.children !== undefined && d.children.length > 0)
+	    		return "5,5"
+	
+	    })
+	
+	    .on("click", function(d) { if (focus !== d) zoom(d), d3.event.stopPropagation() })
+	    .on("mouseover", function(d){return tooltip.style("background-color", "black")
+	      .style("color", "white")
+	      .style("visibility", "visible")
+	      .text(d.name), markFunction(d.name)})
+	    .on("mousemove", function(){return tooltip.style("top",
+	        (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px");})
+	    .on("mouseout", function(){return tooltip.style("visibility", "hidden"), unmarkDependencies(), unmarkHierarchical()})
+		.on("contextmenu", function(d) {
+		     //handle right click
+		     var pack = d.parent.parent.name;
+		     var kind = "";
+		     var clazz = d.name.split("@")[1].split("#")[0];
+		     if(clazz.indexOf(".") > -1) {
+		    	 kind = clazz.split(".")[1];
+		    	 clazz = clazz.split(".")[0];		    	 
+		     }
+		    	 
+		     if(pack.length > 0 && pack !== "Agglomerations")		    
+		     	agglomerationsEventFunction(pack,clazz,kind);		     
+			 
+		     //stop showing browser menu
+		     d3.event.preventDefault();
+		});
+	
+	var tooltip = d3.select("body")
+	    .append("div")
+	    .style("position", "absolute")
+	    .style("z-index", "10")
+	    .style("visibility", "hidden");
+	
+	var text = svg.selectAll("text")
+	    .data(nodes)
+	  .enter().append("text")
+	    .attr("class", "label")    
+	    .style("fill-opacity", function(d) { return d.parent === root ? 1 : 0; })
+	    .style("display", function(d) { return d.parent === root ? null : "none"; })
+	    .style("visibility", "hidden")
+	    .text(function(d) { return d.name.split("#")[0]; });
+	
+	function markDependencies(name) {
+	  if(d3.select("#check1").node().checked) {
+	    if(packHash[name] !== undefined) {
+	      svg.selectAll("circle").filter(function(d) { return d !== undefined && d.name === name}).style("stroke", "black").style("stroke-width", "3px");
+	      svg.selectAll("text").filter(function(d) { return this.textContent === name}).style("visibility", "visible");
+	    }
+	    var dep = packHash[name];
+	    if(dep !== undefined) {
+	      for(var i = 0; i < dep.length; i++) {
+	        svg.selectAll("circle").filter(function(d) { return d !== undefined && d.name === dep[i]}).style("stroke", "black").style("stroke-width", "3px");
+	        svg.selectAll("text").filter(function(d) { return this.textContent === dep[i]}).style("visibility", "visible");
+	      }  
+	    }
+	  }
+	}
+	
+	function unmarkDependencies() {
+	  if(d3.select("#check1").node().checked)
+	    for(var i = 0; i < dependencies.length; i++) {
+	      svg.selectAll("circle").filter(function(d) { return d !== undefined && d.name === dependencies[i].name}).style("stroke", "#000").style("stroke-width", "0px");
+	      svg.selectAll("text").filter(function(d) { return this.textContent === dependencies[i].name}).style("visibility", "hidden");
+	    }  
+	}
+
+	function markFunction(name) {
+		if(isPackage(name)) 
+			markDependencies(name); 
+		else
+			markHierarchical(name);
+	}
+
+	function searchForSmell(name) {
+		for(var i = 0; i < packages_h.length; i++)
+			for(var j = 0; j < packages_h[i].length; j++)
+				if(packages_h[i][j] === name)
+					return i;
+		return -1;
+	}
+
+	function markHierarchical(name) {
+		if(d3.select("#check").node().checked) {
+			var i = searchForSmell(name);
+			if(i >= 0)		
+				for(var j = 0; j < packages_h[i].length; j++)
+					svg.selectAll("circle").filter(function(d) { return d !== undefined && d.name === packages_h[i][j]}).style("stroke", "red").style("stroke-width", "5px");
+		}
+	}
+
+	function unmarkHierarchical() {
+		for(var i = 0; i < packages_h.length; i++)
+			for(var j = 0; j < packages_h[i].length; j++)
+				svg.selectAll("circle").filter(function(d) { return d !== undefined && d.name === packages_h[i][j]}).style("stroke", "#000").style("stroke-width", "0px");
+	}
+	     
+	var node = svg.selectAll("circle,text");
+	
+	svgRoot
+	    .style("background", background_color)
+	    .on("click", function() { zoom(root);});
+	
+	zoomTo([root.x, root.y, root.r * 2 + margin]);
+	
+	function zoom(d) {
+	  var focus0 = focus; focus = d;
+	
+	  var transition = svg.transition()
+	      .duration(d3.event.altKey ? 7500 : 750)
+	      .tween("zoom", function(d) {
+	        var i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2 + margin]);
+	        return function(t) { zoomTo(i(t)); };
+	      });
+	
+	  transition.selectAll("text")
+	    .filter(function(d) { return d.parent === focus || this.style.display === "inline"; })
+	      .style("fill-opacity", function(d) { return d.parent === focus ? 1 : 0; })
+	      .each("start", function(d) { if (d.parent === focus) this.style.display = "inline"; })
+	      .each("end", function(d) { if (d.parent !== focus) this.style.display = "none"; });
+	}
+	
+	function zoomTo(v) {
+	  var k = diameter / v[2]; view = v;
+	  node.attr("transform", function(d) { return "translate(" + (d.x - v[0]) * k + "," + (d.y - v[1]) * k + ")"; });
+	  circle.attr("r", function(d) { return d.r * k; }); 	  
+	}
+	
+	d3.select(self.frameElement).style("height", diameter + "px");
+	
+	
+	// R E F E R E N C I A S
+	
+	var svgReferences = svgRoot.append("svg")
+		.attr("x", 1150)
+	  	.attr("y", 10)
+	    .attr("width", 300)
+	    .attr("height", 450);
+	
+	
+	for(var i = 1; i < smellColor.length + 1; i++) {
+	
+	  svgReferences.append("circle")
+	  .attr("cx", 30)
+	  .attr("cy", Math.max(i*30,30))
+	  .attr("r", 10)
+	  .style("fill", function(d) { return smellColor[i - 1]; });
+	
+	  svgReferences.append("text")
+	  .attr("x", 50)
+	  .attr("y", Math.max(i*30 + 5,35))
+	  .text(smellName[i - 1]);
+	}
+	
+	//Agglomerations boundry reference
+	svgReferences.append("circle")
+	  .attr("cx", 30)
+	  .attr("cy", (smellColor.length)*30)
+	  .attr("r", 10)
+	  .style("fill", function(d) { return "transparent"; })
+	  .style("stroke", "#000")
+	  .style("stroke-dasharray", "5,5");   
+	
+	svgReferences.append("text")
+	  .attr("x", 50)
+	  .attr("y", (smellColor.length)*30 + 5)
+	  .text("Agglomeration");
+
+} //End getData()
+</script>

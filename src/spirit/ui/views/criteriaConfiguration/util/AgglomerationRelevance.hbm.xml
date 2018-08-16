@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 01-abr-2013 14:18:06 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+ <class name="spirit.ui.views.criteriaConfiguration.util.AgglomerationRelevance" table="AGGLOMERATIONRELEVANCE">
+
+	<id name="id" type="java.lang.Long">
+   <column name="AGGLOMERATIONRELEVANCE_ID"/>
+   <generator class="increment"/>
+  </id>
+  <property generated="never" lazy="false" name="agglomerationName" type="java.lang.String">
+   <column name="NAME"/></property>
+  <property generated="never" lazy="false" name="relevance" type="java.lang.Double">
+   <column name="RELEVANCE"/>
+  </property>
+ </class>
+</hibernate-mapping>

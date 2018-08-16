@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 04-abr-2013 19:59:12 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+<class name="spirit.core.smells.detectors.configurationByProject.ShotgunSurgeryDetectionConfiguration" table="SHOTGUNCONF">
+  <id name="id" type="java.lang.Long">
+   <column name="SHOTGUNCONF_ID"/>
+   <generator class="increment"/>
+  </id>
+ <property generated="never" lazy="false" name="CC_GreaterEqual_MANY" type="java.lang.Double">
+   <column name="CC_GreaterEqual_MANY"/></property>
+ <property generated="never" lazy="false" name="CM_Greater_SMemCap" type="java.lang.Double">
+   <column name="CM_Greater_SMemCap"/></property>
+   <property generated="never" lazy="false" name="projectName" type="java.lang.String">
+   <column name="PROJECTNAME"/></property>
+ </class>
+</hibernate-mapping>

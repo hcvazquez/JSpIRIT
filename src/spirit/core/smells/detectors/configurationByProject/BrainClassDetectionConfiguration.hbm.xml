@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 04-abr-2013 19:59:12 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+<class name="spirit.core.smells.detectors.configurationByProject.BrainClassDetectionConfiguration" table="BRAINCLASSCONF">
+  <id name="id" type="java.lang.Long">
+   <column name="BRAINCLASSCONF_ID"/>
+   <generator class="increment"/>
+  </id>
+ <property generated="never" lazy="false" name="LOC_GreaterEqual_VeryHigh" type="java.lang.Double">
+   <column name="LOC_GreaterEqual_VeryHigh"/></property>
+ <property generated="never" lazy="false" name="LOC_GreaterEqual_2xVeryHigh" type="java.lang.Double">
+   <column name="LOC_GreaterEqual_2xVeryHigh"/></property>
+  <property generated="never" lazy="false" name="WMC_GreaterEqual_2xVeryHigh" type="java.lang.Double">
+   <column name="WMC_GreaterEqual_2xVeryHigh"/></property>
+   <property generated="never" lazy="false" name="WMC_GreaterEqual_VeryHigh" type="java.lang.Double">
+   <column name="WMC_GreaterEqual_VeryHigh"/></property>
+   <property generated="never" lazy="false" name="TCC_Less_Half" type="java.lang.Double">
+   <column name="TCC_Less_Half"/></property>
+   <property generated="never" lazy="false" name="projectName" type="java.lang.String">
+   <column name="PROJECTNAME"/></property>
+ </class>
+</hibernate-mapping>

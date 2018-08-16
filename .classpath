@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="resources"/>
+	<classpathentry kind="lib" path="lib/ccl.jar"/>
+	<classpathentry kind="lib" path="lib/javacc.jar"/>
+	<classpathentry kind="lib" path="lib/javancss.jar"/>
+	<classpathentry kind="lib" path="lib/jhbasic.jar"/>
+	<classpathentry kind="lib" path="lib/antlr-2.7.7.jar"/>
+	<classpathentry kind="lib" path="lib/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/hibernate-commons-annotations-4.0.1.Final.jar"/>
+	<classpathentry kind="lib" path="lib/hibernate-core-4.1.10.Final.jar"/>
+	<classpathentry kind="lib" path="lib/hibernate-jpa-2.0-api-1.0.1.Final.jar"/>
+	<classpathentry kind="lib" path="lib/hsqldb.jar"/>
+	<classpathentry kind="lib" path="lib/javassist-3.15.0-GA.jar"/>
+	<classpathentry kind="lib" path="lib/jboss-logging-3.1.0.GA.jar"/>
+	<classpathentry kind="lib" path="lib/jboss-transaction-api_1.1_spec-1.0.0.Final.jar"/>
+	<classpathentry kind="lib" path="lib/sqltool.jar"/>
+	<classpathentry kind="lib" path="lib/cm.jar"/>
+	<classpathentry kind="lib" path="lib/jgraph-5.13.0.0.jar"/>
+	<classpathentry kind="lib" path="lib/jgrapht-core-0.9.0.jar"/>
+	<classpathentry kind="lib" path="lib/jgrapht-demo-0.9.0.jar"/>
+	<classpathentry kind="lib" path="lib/jgrapht-ext-0.9.0-uber.jar"/>
+	<classpathentry kind="lib" path="lib/jgrapht-ext-0.9.0.jar"/>
+	<classpathentry kind="lib" path="lib/jgraphx-2.0.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-asl-0.9.5.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
