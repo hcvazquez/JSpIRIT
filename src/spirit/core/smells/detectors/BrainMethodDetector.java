@@ -4,7 +4,6 @@ import spirit.core.smells.BrainMethod;
 import spirit.core.smells.CodeSmell;
 import spirit.core.smells.detectors.configurationByProject.BrainMethodDetectionConfiguration;
 import spirit.metrics.constants.MetricNames;
-import spirit.metrics.constants.MetricThresholds;
 import spirit.metrics.storage.MethodMetrics;
 import spirit.metrics.storage.NodeMetrics;
 

@@ -3,11 +3,13 @@ package spirit.core.smells.detectors.configurationByProject;
 import spirit.metrics.constants.MetricThresholds;
 
 public class BrainMethodDetectionConfiguration extends CodeSmellDetectionConfiguration{
+	
 	private Long id;
 	private Double LOC_Greater_VeryHigh;
 	private Double WMC_GreaterEqual_Many;
 	private Double MAXNESTING_GreaterEqual_DEEP;
 	private Double NOF_GreaterEqual_SMemCap;
+	
 	public BrainMethodDetectionConfiguration(String projectName) {
 		super(projectName);
 		LOC_Greater_VeryHigh=MetricThresholds.LOCVeryHigh;

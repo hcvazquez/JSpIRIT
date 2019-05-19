@@ -26,6 +26,7 @@ import spirit.core.smells.DispersedCoupling;
 import spirit.core.smells.FeatureEnvy;
 import spirit.core.smells.GodClass;
 import spirit.core.smells.IntensiveCoupling;
+import spirit.core.smells.LongMethod;
 import spirit.core.smells.RefusedParentBequest;
 import spirit.core.smells.ShotgunSurgery;
 import spirit.core.smells.TraditionBreaker;
@@ -40,6 +41,7 @@ public class SmellRelevanceConfiguration extends CriterionConfigurationDialog {
 	private ComboViewer comboViewerIntensiveCoupling;
 	private ComboViewer comboViewerShotgunSurgery;
 	private ComboViewer comboViewerBrainMethod;
+	private ComboViewer comboViewerLongMethod;
 	private ComboViewer comboViewerDispersedCoupling;
 	private ComboViewer comboViewerGodClass;
 	private ComboViewer comboViewerRefusedParentBequest;
@@ -67,15 +69,16 @@ public class SmellRelevanceConfiguration extends CriterionConfigurationDialog {
 		
 		comboViewerBrainClass=createComboViewer(10,30,"Brain Class",container);
 		comboViewerDataClass=createComboViewer(10,80,"Data Class",container);
-		comboViewerFeatureEnvy=createComboViewer(10,120,"Feature Envy",container);
-		comboViewerIntensiveCoupling=createComboViewer(10,170,"Intensive Coupling",container);
-		comboViewerShotgunSurgery=createComboViewer(10,220,"Shotgun Surgery",container);
+		comboViewerFeatureEnvy=createComboViewer(10,130,"Feature Envy",container);
+		comboViewerIntensiveCoupling=createComboViewer(10,180,"Intensive Coupling",container);
+		comboViewerShotgunSurgery=createComboViewer(10,230,"Shotgun Surgery",container);
 		
 		comboViewerBrainMethod=createComboViewer(170,30,"Brain Method",container);
 		comboViewerDispersedCoupling=createComboViewer(170,80,"Dispersed Coupling",container);
-		comboViewerGodClass=createComboViewer(170,120,"God Class",container);
-		comboViewerRefusedParentBequest=createComboViewer(170,170,"Refused Parent Bequest",container);
-		comboViewerTraditionBreaker=createComboViewer(170,220,"Tradition Breaker",container);
+		comboViewerGodClass=createComboViewer(170,130,"God Class",container);
+		comboViewerRefusedParentBequest=createComboViewer(170,180,"Refused Parent Bequest",container);
+		comboViewerTraditionBreaker=createComboViewer(170,230,"Tradition Breaker",container);
+		comboViewerLongMethod=createComboViewer(170,280,"Long Method",container);
 		
 		return container;
 	}
@@ -125,6 +128,7 @@ public class SmellRelevanceConfiguration extends CriterionConfigurationDialog {
 		selectedCriterion.addRelevance(BrainClass.NAME, getComboSelection(comboViewerBrainClass));
 		selectedCriterion.addRelevance(DataClass.NAME, getComboSelection(comboViewerDataClass));
 		selectedCriterion.addRelevance(FeatureEnvy.NAME, getComboSelection(comboViewerFeatureEnvy));
+		selectedCriterion.addRelevance(LongMethod.NAME, getComboSelection(comboViewerLongMethod));
 		selectedCriterion.addRelevance(IntensiveCoupling.NAME, getComboSelection(comboViewerIntensiveCoupling));
 		selectedCriterion.addRelevance(ShotgunSurgery.NAME, getComboSelection(comboViewerShotgunSurgery));
 		selectedCriterion.addRelevance(BrainMethod.NAME, getComboSelection(comboViewerBrainMethod));

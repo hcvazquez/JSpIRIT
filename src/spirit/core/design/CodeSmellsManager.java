@@ -35,6 +35,7 @@ import spirit.core.smells.detectors.DispersedCouplingDetector;
 import spirit.core.smells.detectors.FeatureEnvyDetector;
 import spirit.core.smells.detectors.GodClassDetector;
 import spirit.core.smells.detectors.IntensiveCouplingDetector;
+import spirit.core.smells.detectors.LongMethodDetector;
 import spirit.core.smells.detectors.RefusedParentBequestDetector;
 import spirit.core.smells.detectors.ShotgunSurgeryDetector;
 import spirit.core.smells.detectors.TraditionBreakerDetector;
@@ -85,6 +86,9 @@ public class CodeSmellsManager {
 		String eclipseProjectPath = eclipseProject.getFullPath().toString();
 		methodDetectors.add(new BrainMethodDetector(DataBaseManager
 				.getInstance().getBrainMethodDetectionConfiguration(
+						eclipseProjectPath)));
+		methodDetectors.add(new LongMethodDetector(DataBaseManager
+				.getInstance().getLongMethodDetectionConfiguration(
 						eclipseProjectPath)));
 		methodDetectors.add(new FeatureEnvyDetector(DataBaseManager
 				.getInstance().getFeatureEnvyDetectionConfiguration(
