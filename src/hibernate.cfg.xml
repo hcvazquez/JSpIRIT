@@ -44,6 +44,7 @@
 		
 		<mapping resource="spirit/core/smells/detectors/configurationByProject/BrainClassDetectionConfiguration.hbm.xml"/>
 		<mapping resource="spirit/core/smells/detectors/configurationByProject/BrainMethodDetectionConfiguration.hbm.xml"/>
+		<mapping resource="spirit/core/smells/detectors/configurationByProject/LongMethodDetectionConfiguration.hbm.xml"/>
 
 		<mapping resource="spirit/core/smells/detectors/configurationByProject/DataClassDetectionConfiguration.hbm.xml"/>
 

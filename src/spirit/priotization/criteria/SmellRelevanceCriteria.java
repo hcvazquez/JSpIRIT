@@ -13,6 +13,7 @@ import spirit.core.smells.DispersedCoupling;
 import spirit.core.smells.FeatureEnvy;
 import spirit.core.smells.GodClass;
 import spirit.core.smells.IntensiveCoupling;
+import spirit.core.smells.LongMethod;
 import spirit.core.smells.RefusedParentBequest;
 import spirit.core.smells.ShotgunSurgery;
 import spirit.core.smells.TraditionBreaker;
@@ -35,6 +36,7 @@ public class SmellRelevanceCriteria extends Criterion{
 		addRelevance(IntensiveCoupling.NAME, 1);
 		addRelevance(ShotgunSurgery.NAME, 1);
 		addRelevance(BrainMethod.NAME, 1);
+		addRelevance(LongMethod.NAME, 1);
 		addRelevance(DispersedCoupling.NAME, 1);
 		addRelevance(GodClass.NAME, 1);
 		addRelevance(RefusedParentBequest.NAME, 1);

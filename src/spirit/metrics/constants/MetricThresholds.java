@@ -19,6 +19,8 @@ public class MetricThresholds {
 	public static final double LOCVeryHigh = LOCNONHigh * NONNOCHigh * (OUTLIER_FACTOR - 1.0); //Method line of code Very High
 	public static final double LOCClassVeryHigh = LOCNONHigh * NONNOCHigh * OUTLIER_FACTOR; //Class lines of code Very High
 	
+	public static final double MLOC_VERY_HIGH = 40;
+	
 	public static final double DEEP = 3;//3
 	public static final double MANY = 4;//4
 	

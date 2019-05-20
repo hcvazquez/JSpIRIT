@@ -43,6 +43,7 @@ public class DataHelperAgglomerations {
 		smellID.put("Data Class",7);
 		smellID.put("Intensive Coupling",8);
 		smellID.put("Tradition Breaker",9);
+		smellID.put("Long Method", 10);
 	}	
 	/**
 	 * IntraComponent Agglomeration Algorithms
